@@ -10,8 +10,7 @@ router.get('/:category', promiseWrapper(async (req,res)=>{
     checkCategory(category,'Invalid Product Type, please select from our collection of laptops, tablets, phones and other tech-related accessories');
     
         const products = await Product.find({category: category});
-        res.render('layouts/standard',{products});
-    
+        res.render('layouts/tech/index',{products, page: category});
 }))
 
 //get create form
@@ -32,7 +31,6 @@ router.get('/:category/:id/update',(req,res)=>{
 router.get('/:category/:id', promiseWrapper(async(req,res)=>{
     const {category, id} = req.params;
     checkCategory(category,'Invalid Product Type, please select from our collection of laptops, tablets, phones and other tech-related accessories')
-
     const product = await Product.findById(id).populate({
         path: 'reviews',
         populate:{
@@ -44,7 +42,7 @@ router.get('/:category/:id', promiseWrapper(async(req,res)=>{
         return res.render('404',{message})
     }
     else{
-        res.render('layouts/tech/index')
+        res.render('layouts/tech/show',{product})
     }
 }))
 
@@ -52,11 +50,12 @@ router.get('/:category/:id', promiseWrapper(async(req,res)=>{
 router.post('/:category',async (req,res)=>{
     const {category} = req.params;
     checkCategory(category,'Cannot create products of this type')
-
+    console.log(req.body)
     const product = new Product(req.body);
+    product.category = category;
     await product.save();
     const products = await Product.find({category: category});
-    res.redirect('layouts/tech/index',{products})
+    res.redirect(`/techroom/${category}`)
 })
 
 //Update product data form, should prepopulate form with all current data

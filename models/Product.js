@@ -7,6 +7,10 @@ const imgSchema = new mongoose.Schema({
 })
 
 const ProductSchema = new mongoose.Schema({
+    name:{
+        type: String,
+        required: [true,'must include a product name']
+    },
     productQuantity:{
         type: String,
         required: [true, 'must include a product quantity']
@@ -20,7 +24,7 @@ const ProductSchema = new mongoose.Schema({
     },
     category:{
         type: String,
-        enum: ['Laptop','Tablet','Phone','Accessory'],
+        enum: ['laptops','tablets','phones','accessories'],
         required: [true,'must include a category for product']
     },
     images: {

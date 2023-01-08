@@ -6,7 +6,8 @@ const passportLocalMongoose = require('passport-local-mongoose');
 
 const UserSchema = new mongoose.Schema({
     permission: {
-        boolean: String,
+        type: Boolean,
+        required: [true,'must include a permission']
     },
     email: {
         type: String,
