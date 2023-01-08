@@ -10,6 +10,7 @@ const OrderSchema = new mongoose.Schema({
     },
     orderQuantity:{
         type: Number,
+        default: 0,
         required:[true,'must include order quantity']
     },
     products:[{

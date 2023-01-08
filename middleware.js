@@ -1,11 +1,9 @@
 const Product = require('./models/Product');
 
-module.exports.checkCategory = async function (req, res, next) {
-    const {category} = req.params;
-    if (category != 'phones' && category != 'accessories' && category != 'tablets' && category != 'laptops') {
-        throw new Error
+module.exports.checkCategory = function(category,message){
+    if(category != 'phones' && category!='accessories' && category!='tablets' && category!='laptops'){
+        return res.render('404',{message});
     }
-    else next();
 }
 
 module.exports.checkId = async function(req,res,next){

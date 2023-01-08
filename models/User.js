@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Product = require('./Product');
 const Review = require('./Review');
+const Order = require('./Order')
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const UserSchema = new mongoose.Schema({
     permission: {
@@ -8,12 +10,13 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: [true, 'user must enter a valid email']
     },
-    password: {
-        type: String,
-        required: [true, 'user must enter a password']
-    },
+    orders:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order'
+    }],
     cart: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
@@ -21,7 +24,13 @@ const UserSchema = new mongoose.Schema({
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Review'
-    }]
+    }],
+    products:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    }],
 });
+
+UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', UserSchema);

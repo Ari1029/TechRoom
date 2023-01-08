@@ -1,7 +1,7 @@
-asyncWrapper = function(f){
+promiseWrapper = function(f){
     return(req,res,next)=>{
         f(req,res).catch(next);
     }
 }
 
-module.exports = asyncWrapper;
+module.exports = promiseWrapper;
