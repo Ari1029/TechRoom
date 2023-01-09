@@ -1,0 +1,44 @@
+<% layout('layouts/mainTemplate') %>
+
+<div class="row">
+    <div class="col-7">
+            <h5 class="card-title">Hello <%=order.user.username%>, are you ready to checkout? Here are the products currently in your cart:</h5>
+        <div class="card-body">
+            <% for (let product of order.products){ %>
+                <div class="col-3 card mb-4">
+                <h6><%=product.name%></h6>
+                <h6><%=product.price%></h6>
+                <h6><%=product.imgage%></h6>
+            </div>
+            <% } %>
+        </div>
+        <div class="card-footer">
+            Cart: <%=order.products.length%> items
+        </div>
+        </div>
+        <div class="col-5 whiteText display-flex">
+            <form action="/techroom/cart/order/stripe" method="POST" novalidate class="validated-form">
+                <% let i=0; for(let product of order.products){i+=product.price} %>
+                <h6>Your total is: $<%=i%></h6>
+                <h6>Enter your address for delivery!</h6>
+                <label for="streetAddress" class="form-label">Street Address</label>
+                <input class='mb-3'type="text" name="streetAddress" id="streetAddress">
+                <br>
+                
+                <label for="city" class="form-label">City</label>
+                <input class='mb-3'type="text" name="city" id="city">
+                <br>
+
+                <label for="postalCode" class="form-label">Postal Code</label>
+                <input class='mb-3'type="text" name="postalCode" id="postalCode">
+                <br>
+
+                <label for="country" class="form-label">Country</label>
+                <input class='mb-3' type="text" name="country" id="country">
+                <button class="btn btn-info">Continue to checkout</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- on side once we get bootstrap layout-->

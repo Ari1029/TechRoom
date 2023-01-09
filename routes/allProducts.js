@@ -1,69 +1,75 @@
 const express = require('express');
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 const Product = require('../models/Product');
 const promiseWrapper = require('../utilities/promiseWrapper');
-const {checkCategory} = require('../middleware');
+const { checkCategory, ensureLogin, checkAdmin } = require('../middleware');
+const User = require('../models/User')
 
 //Load specific page
-router.get('/:category', promiseWrapper(async (req,res)=>{
-    const {category} = req.params;
-    checkCategory(category,'Invalid Product Type, please select from our collection of laptops, tablets, phones and other tech-related accessories');
-    
-        const products = await Product.find({category: category});
-        res.render('layouts/tech/index',{products, page: category});
+router.get('/:category', checkCategory, promiseWrapper(async (req, res) => {
+    const { category } = req.params;
+    const products = await Product.find({ category: category });
+    res.render('layouts/tech/index', { products, page: category });
 }))
 
-//get create form
-router.get('/:category/new',(req,res)=>{
-    const {category} = req.params;
-    checkCategory(category,'Cannot create a product of invalid type')
-    res.render('layouts/tech/create') //when we render this form, we check if browserUser.permission is true or false and render/dont render the form depending on that
+//get create form, we check if user is an admin using req.user._id and deny request if not. Have a link on the page to add a product if admin.
+router.get('/:category/new', checkCategory, ensureLogin, checkAdmin, (req, res) => {
+    const { category } = req.params;
+    res.render('layouts/tech/create', { page: category }) //when we render this form, we check if browserUser.permission is true or false and render/dont render the form depending on that
 })
 
-//Get update form
-router.get('/:category/:id/update',(req,res)=>{
-    const {category} = req.params;
-    checkCategory(category,'Cannot create a product of invalid type')
+//Get update form, we check if user is an admin using req.user._id and deny request if not. Have a link on the page to add a product if admin.
+router.get('/:category/:id/update', checkCategory, ensureLogin, checkAdmin, (req, res) => {
     res.render('/layouts/tech/update') //when we render this form, we check if browserUser.permission is true or false and render/dont render the form depending on that
 })
 
 //Load specific product
-router.get('/:category/:id', promiseWrapper(async(req,res)=>{
-    const {category, id} = req.params;
-    checkCategory(category,'Invalid Product Type, please select from our collection of laptops, tablets, phones and other tech-related accessories')
+router.get('/:category/:id', checkCategory, promiseWrapper(async (req, res) => {
+    const { category, id } = req.params;
     const product = await Product.findById(id).populate({
         path: 'reviews',
-        populate:{
+        populate: {
             path: 'reviews'
         }
     })
-    if(!product){
+    if (!product) {
         const message = 'Product does not exist!'
-        return res.render('404',{message})
+        return res.render('404', { message })
     }
-    else{
-        res.render('layouts/tech/show',{product})
+    else {
+        res.render('layouts/tech/show', { product })
     }
 }))
 
 //Post product data
-router.post('/:category',async (req,res)=>{
-    const {category} = req.params;
-    checkCategory(category,'Cannot create products of this type')
+router.post('/:category', checkCategory, ensureLogin, checkAdmin, async (req, res) => {
+    const { category } = req.params;
     console.log(req.body)
     const product = new Product(req.body);
     product.category = category;
     await product.save();
-    const products = await Product.find({category: category});
+    const products = await Product.find({ category: category });
     res.redirect(`/techroom/${category}`)
 })
 
 //Update product data form, should prepopulate form with all current data
-router.patch('/:category/:id',async(req,res)=>{
-    const {category, id} = req.params.id;
-    checkCategory(category,'Invalid Product Type, please select from our collection of laptops, tablets, phones and other tech-related accessories')
-    const product = findByIdAndUpdate(id,{...req.body});
+router.patch('/:category/:id', checkCategory, ensureLogin, checkAdmin, async (req, res) => {
+    const { category, id } = req.params.id;
+    const product = findByIdAndUpdate(id, { ...req.body });
     res.redirect('/layouts')
+})
+
+router.get('/:category/:id', checkCategory, async(req,res)=>{
+    const {id} = req.params;
+    const product = await Product.findById(id);
+    if(!product){
+        const error = {
+            message: 'That product does not exist!',
+            statusCode: 404
+        }
+        return res.send('404',{error})
+    }
+    res.render('layouts/tech/show',{product});
 })
 
 module.exports = router;

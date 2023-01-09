@@ -8,27 +8,30 @@ const OrderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    orderQuantity:{
-        type: Number,
-        default: 0,
-        required:[true,'must include order quantity']
-    },
     products:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
     }],
     date:{
-        type: Date, 
-        required: [true,'must include a date']
+        type: Number
     },
-    address:{
-        type: mongoose.Schema.Types.ObjectId,
-        required: [true,'must include an address to ship to']
+    country:{
+        type: String,
+    },
+    postalCode:{
+        type: String,
+    },
+    city:{
+        type: String,
+    },
+    streetAddress:{
+        type: String,
     },
     status:{
         type: String,
         enum: ['Pending','Shipped','Delivered']
     }
+    
 })
 
 module.exports = mongoose.model('Order', OrderSchema);

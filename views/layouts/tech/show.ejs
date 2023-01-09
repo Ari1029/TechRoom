@@ -1,0 +1,10 @@
+<% layout('layouts/mainTemplate') %>
+
+<h1><%=product.name%></h1>
+<h2>In stock: <%=product.productQuantity%></h2>
+<h2>Price:<%=product.price%></h2>
+<form action="/techroom/cart" method="POST" class="form-label">
+    <label style="display:none" for="name" class="form-label">Product name</label>
+    <input style="display:none" name="name" value="<%=product.name%>" id="name">
+    <button class="btn btn-success">Add to Cart</button>
+</form>

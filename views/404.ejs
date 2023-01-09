@@ -1,1 +1,5 @@
-<h1>404 ERROR</h1>
+<% layout('layouts/mainTemplate') %>
+
+<h1><%=error.statusCode%></h1>
+
+<h2><%=error.message%></h2>

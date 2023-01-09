@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const allProducts = require('./routes/allProducts');
-const orders = require('./routes/orders');
+const cart = require('./routes/cart');
 const userPaths = require('./routes/users');
 const mongoose = require('mongoose');
 const User =require('./models/User');
@@ -26,7 +26,6 @@ db.once('open',()=>{
 });
 
 //configuring view engine and more configuration
-app.use(express.static(path.join(__dirname, 'public')))
 app.engine('ejs',ejsMate)
 app.set('view engine','ejs')
 app.use(express.urlencoded({extneded: true}))
@@ -48,8 +47,13 @@ passport.use(new Strategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use((req,res,next)=>{
+    res.locals.currUser = req.user;
+    next();
+})
+
 //routes
-app.use('/techroom',orders)
+app.use('/techroom',cart)
 app.use('/techroom',userPaths);
 app.use('/techroom',allProducts);
 

@@ -1,0 +1,14 @@
+<% layout('layouts/mainTemplate') %>
+
+<form action='/techroom/<%=page%>' method="POST" validated-form novalidate>
+    <label class="form-label" for="name">Product Name</label>
+    <input type = 'text' name="name" id="name" required>
+    <label class="form-label" for="price">Price</label>
+    <input type = 'number' name="price" id="price" required>
+    <label class="form-label" for="productQuantity">Product Quantity</label>
+    <input type = 'number' name="productQuantity" id="productQuantity" required>
+    <label class="form-label" for="description">Description</label>
+    <textarea required class="form-control" name="description" id="body" cols="40" rows="5"></textarea>
+    <input class="form-control" name="category" value="<%=page%>" id="category" style="display: none;">
+    <button>Add Product</button>
+</form>

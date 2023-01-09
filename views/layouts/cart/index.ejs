@@ -1,4 +1,20 @@
-<% if(user.cart.length===0) { %>
-    <h1>Your cart is currently empty. Add products from our laptops, tablets, phones and accessories collection!</h1>
+<% layout('layouts/mainTemplate') %>
+
+<% if(user.products.length===0) { %>
+    <h1>Hi <%=user.username%>, your cart is currently empty. Add products from our laptops, tablets, phones and accessories collection!</h1>
+<% } else {%>
+
+<h2>Hi <%=user.username%>, here are the products in your cart: <a href='/techroom/cart/order'>Click here to checkout!</a></h2>
+<% for (let product of user.products){ %>
+
+<h2><%=product.name%></h2>
+<h2><%=product.price%></h2>
+<h2><%=product.description%></h2>
+<h2><%=product.category%></h2>
+<h2><%=product.image%></h2>
+<h2><%=product.reviews%></h2>
+<br></br>
+
 <% } %>
 
+<% } %>

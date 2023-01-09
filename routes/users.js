@@ -3,9 +3,11 @@ const User = require('../models/User');
 const Order = require('../models/Order');
 const promiseWrapper = require('../utilities/promiseWrapper');
 const passport = require('passport');
+const { ensureLogin } = require('../middleware');
+
 
 //ADMIN: VIEW ALL CURRENT ORDERS
-router.get('/',promiseWrapper(async(req,res)=>{
+router.get('/', promiseWrapper(async(req,res)=>{ //home page will be different for user and admin
     //if req.user is an admin, then run the below code
     // const displayUsers = await User.find({permission: false}).populate({
     //     path: 'orders',
@@ -20,7 +22,16 @@ router.get('/signup',(req,res)=>{
     res.render('layouts/user/signup');
 })
 
-router.post('/signup',promiseWrapper(async (req,res)=>{
+//using postman's logout
+router.get('/logout',(req,res)=>{
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        // req.flash('success','Successfully logged out')
+        res.redirect('/techroom');
+      });
+})
+
+router.post('/signup',promiseWrapper(async (req,res,next)=>{
     const {email, username, password} = req.body;
     const emailTest = await User.find({email: email});
     const usernameTest = await User.find({username: username})
@@ -40,6 +51,9 @@ router.post('/signup',promiseWrapper(async (req,res)=>{
     }
     else user.permission = false;
     user = await User.register(user,password);
+    req.login(user,e=>{
+        if(e) return next(e)
+    })
     res.redirect('/techroom')
 }))
 
@@ -47,8 +61,11 @@ router.get('/login',promiseWrapper(async (req,res)=>{
     res.render('layouts/user/login')
 }))
 
+//using postman login middleware authenticate
 router.post('/login',passport.authenticate('local',{failureFlash: true, failureRedirect: '/login'}),(req,res)=>{
-    res.redirect('/techroom')
+    const url = req.session.return || '/techroom';
+    delete req.session.return;
+    res.redirect(url);
 })
 
 module.exports = router;

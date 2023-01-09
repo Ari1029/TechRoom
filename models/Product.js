@@ -15,28 +15,32 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: [true, 'must include a product quantity']
     },
+    description:{
+        type: String,
+        // required: [true,'must include a description']
+    },
     price:{
         type: Number,
         required: [true, 'product must have a price']
     },
     purchaseDate:{
-        type: Date,
+        type: Number,
     },
     category:{
         type: String,
         enum: ['laptops','tablets','phones','accessories'],
         required: [true,'must include a category for product']
     },
-    images: {
-        type: [imgSchema],
-        required: [true,'must upload an image of this product']
+    image: {
+        type: imgSchema,
+        // required: [true,'must upload an image of this product']
     },
     reviews:{
         type: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Review'
         }],
-    }
+    },
 })
 
 ProductSchema.post('fineOneAndDelete', async (req)=>{
