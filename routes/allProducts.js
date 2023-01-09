@@ -7,9 +7,18 @@ const User = require('../models/User')
 
 //Load specific page
 router.get('/:category', checkCategory, promiseWrapper(async (req, res) => {
-    const { category } = req.params;
-    const products = await Product.find({ category: category });
-    res.render('layouts/tech/index', { products, page: category });
+    if(req.user){
+        const id=req.user._id;
+        const user = await User.findById(id);
+        const { category } = req.params;
+        const products = await Product.find({ category: category });
+        return res.render('layouts/tech/indexAdmin', { products, page: category, user});
+    }
+    else{
+        const { category } = req.params;
+        const products = await Product.find({ category: category });
+        return res.render('layouts/tech/index', { products, page: category});
+    }
 }))
 
 //get create form, we check if user is an admin using req.user._id and deny request if not. Have a link on the page to add a product if admin.

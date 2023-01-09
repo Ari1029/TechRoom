@@ -46,4 +46,8 @@
                 </div>
                     <br>
                 <% } %>
-                
+    <% if(currUser && user.permission) { %>
+    <form clas='mb-3' action="/techroom/<%=page%>/new" method="GET">
+        <button class="mb-5 btn btn-success">Add an item for sale</button>
+    </form>
+    <% } %>

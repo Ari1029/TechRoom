@@ -53,9 +53,6 @@ router.post('/signup',promiseWrapper(async (req,res,next)=>{
     const authUser = await User.register(user,password);
     req.login(authUser,err=>{
         if(err) return next(err);
-        if(email.includes('admin')){
-            return res.redirect('/techroom/admin')
-        }
         else res.redirect('/techroom')
     })
 }))
@@ -68,10 +65,7 @@ router.get('/login',promiseWrapper(async (req,res)=>{
 router.post('/login',passport.authenticate('local',{failureFlash: true, failureRedirect: '/login'}),async(req,res)=>{
     const username = req.body.username;
     const user = await User.findOne({username: username});
-    if(user.permission===true){
-        return res.redirect('/techroom/admin');
-    }
-    else return res.redirect('/techroom');
+        return res.redirect('/techroom');
 })
 
 module.exports = router;
