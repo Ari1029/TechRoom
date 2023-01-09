@@ -4,7 +4,7 @@
     <h1>Hi <%=user.username%>, your cart is currently empty. Add products from our laptops, tablets, phones and accessories collection!</h1>
 <% } else {%>
 
-<h2>Hi <%=user.username%>, here are the products in your cart: <a href='/techroom/cart/order'>Click here to checkout!</a></h2>
+<h2>Hi <%=user.username%>, here are the products in your cart: <a href='/techroom/cart/order'>Click here to checkout!</a> or <a href='/techroom'>Click here to continue browsing!</a></h2>
 <% for (let product of user.products){ %>
 
 <h2><%=product.name%></h2>

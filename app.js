@@ -14,6 +14,9 @@ const promiseWrapper = require('./utilities/promiseWrapper');
 const {ensureLogin} = require('./middleware');
 const Order =require('./models/Order');
 
+app.use(express.static(__dirname + '/public'));
+
+
 require('dotenv').config()
 // app.request(express.json())
 const stripe = require('stripe')(process.env.STRIPE_KEY)
