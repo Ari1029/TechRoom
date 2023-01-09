@@ -45,16 +45,19 @@ router.post('/signup',promiseWrapper(async (req,res,next)=>{
         const message = 'An account with that username already exists'
         return res.render('404',{message});
     }
-    let user = new User({email, username});
+    const user = new User({email, username});
     if(email.includes('admin')){
         user.permission = true;
     }
     else user.permission = false;
-    user = await User.register(user,password);
-    req.login(user,e=>{
-        if(e) return next(e)
+    const authUser = await User.register(user,password);
+    req.login(authUser,err=>{
+        if(err) return next(err);
+        if(email.includes('admin')){
+            return res.redirect('/techroom/admin')
+        }
+        else res.redirect('/techroom')
     })
-    res.redirect('/techroom')
 }))
 
 router.get('/login',promiseWrapper(async (req,res)=>{
@@ -62,10 +65,13 @@ router.get('/login',promiseWrapper(async (req,res)=>{
 }))
 
 //using postman login middleware authenticate
-router.post('/login',passport.authenticate('local',{failureFlash: true, failureRedirect: '/login'}),(req,res)=>{
-    const url = req.session.return || '/techroom';
-    delete req.session.return;
-    res.redirect(url);
+router.post('/login',passport.authenticate('local',{failureFlash: true, failureRedirect: '/login'}),async(req,res)=>{
+    const username = req.body.username;
+    const user = await User.findOne({username: username});
+    if(user.permission===true){
+        return res.redirect('/techroom/admin');
+    }
+    else return res.redirect('/techroom');
 })
 
 module.exports = router;

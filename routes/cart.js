@@ -45,22 +45,21 @@ router.get('/cart/order',ensureLogin, promiseWrapper(async(req,res)=>{
     res.render('order/order',{order});
 }))
 
-router.get('/cart/order/stripe/create-payment',promiseWrapper(async(req,res)=>{
-    res.render('order/createPayment');
-}))
-
-router.post('/cart/order/stripe/create-payment',promiseWrapper(async(req,res)=>{
-    
-}))
-
-router.get('/cart/order/stripe',ensureLogin,promiseWrapper(async(req,res)=>{
+router.get('/cart/order/stripe/create-payment',ensureLogin, promiseWrapper(async(req,res)=>{
     const id = req.user._id;
     const date = Date.now();
     const order = await Order.findOneAndUpdate({user: {_id: id}}, {date:date}).populate('products');
+    let i=0;
     for(let product of order.products){
+        i += product.price;
         product.purchaseDate = parseInt(Date.now());
+        await product.save();
     }
-    res.redirect('/techroom/cart/order/stripe/create-payment',{order}); //ask how would you like to pay and set up stripe on /cart/order/stripe/create-payment
+    i= i*1.13;
+    i=i.toFixed(2);
+    order.totalPrice = i;
+    await order.save();
+    res.render('order/createPayment',{order});
 }))
 
 router.post('/cart/order/stripe',ensureLogin,promiseWrapper(async(req,res)=>{
@@ -68,7 +67,7 @@ router.post('/cart/order/stripe',ensureLogin,promiseWrapper(async(req,res)=>{
     const {country, postalCode, city, streetAddress} = req.body;
     const user = await User.findById(id);
     const order = await Order.findOneAndUpdate({user: {_id: id}}, {streetAddress: streetAddress,country: country,city: city, postalCode: postalCode, status: 'Pending'});
-    res.redirect('/techroom/cart/order/stripe');
+    res.redirect('/techroom/cart/order/stripe/create-payment');
 }))
 
 

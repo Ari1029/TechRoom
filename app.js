@@ -5,13 +5,19 @@ const cart = require('./routes/cart');
 const userPaths = require('./routes/users');
 const mongoose = require('mongoose');
 const User =require('./models/User');
-const path = require('path');
 const ejsMate = require('ejs-mate')
 const passport = require('passport');
-const passportStrategy = require('passport-local');
 const override = require('method-override');
 const expressSesssion = require('express-session');
 const Strategy = require('passport-local');
+const promiseWrapper = require('./utilities/promiseWrapper');
+const {ensureLogin} = require('./middleware');
+const Order =require('./models/Order');
+
+require('dotenv').config()
+// app.request(express.json())
+const stripe = require('stripe')(process.env.STRIPE_KEY)
+app.use(express.json())
 
 //connecting to database
 mongoose.connect('mongodb://127.0.0.1:27017/techroom', {
@@ -53,6 +59,34 @@ app.use((req,res,next)=>{
 })
 
 //routes
+app.post('/techroom/create-session',ensureLogin, promiseWrapper(async(req,res)=>{
+    const id = req.user._id;
+    const date = Date.now();
+    const order = await Order.findOneAndUpdate({user: {_id: id}},{date:date}).populate('user').populate('products');
+    const tot = order.totalPrice * 100;
+    let name = `${order.user.username}'s TechRoom Order`;
+    name = name.toUpperCase();
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [
+            {
+                price_data: {
+                    currency: 'cad',
+                    product_data: {
+                        name: name
+                    },
+                    unit_amount: tot,
+                },
+                quantity: 1,
+            }
+        ],
+        mode:'payment',
+        success_url: `${process.env.URL}/techroom`,
+        cancel_url: `${process.env.URL}/techroom`
+    })
+    res.redirect(`${session.url}`);
+    }
+))
 app.use('/techroom',cart)
 app.use('/techroom',userPaths);
 app.use('/techroom',allProducts);

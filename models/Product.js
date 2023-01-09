@@ -41,6 +41,9 @@ const ProductSchema = new mongoose.Schema({
             ref: 'Review'
         }],
     },
+    averageRating:{
+        type: Number
+    }
 })
 
 ProductSchema.post('fineOneAndDelete', async (req)=>{

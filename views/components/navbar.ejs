@@ -1,54 +1,63 @@
 <style>
-  nav .container-fluid a{
+  .nav-link{
     color: white !important;
   }
+  .navbar-brand{
+    color: white !important;
+  }
+  .dropdown-item{
+    color: black !important;
+  }
+  .navbar{
+            background-color: #000e36 !important;
+        }
+  
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-light sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">TechRoom</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Shop
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="/techroom/laptops">Laptops</a></li>
-              <li><a class="dropdown-item" href="/techroom/tablets">Tablets</a></li>
-              <li><a class="dropdown-item" href="/techroom/phones">Phones</a></li>
-              <li><a class="dropdown-item" href="/techroom/accessories">Accessories</a></li>
-            </ul>
-          </li>
-          <ul class="navbar-nav ms-auto">
-            <% if(currUser) { %>
-              <li class="nav-item me-2">
-                  <a class="nav-link" href="/techroom/cart">Cart</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/techroom/logout">Logout</a>
-                </li>
-              <% } else {%>
-                <li class="nav-item me-2">
-                  <a class="nav-link" href="/techroom/cart">Cart</a>
-                </li>
-              <li class="nav-item me-auto">
-                  <a class="nav-link" href="/techroom/signup">Signup</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/techroom/login">Login</a>
-              </li>
-              <% } %>
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/techroom">TechRoom</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/techroom">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Shop
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/techroom/laptops">Laptops</a></li>
+            <li><a class="dropdown-item" href="/techroom/tablets">Tablets</a></li>
+            <li><a class="dropdown-item" href="/techroom/phones">Phones</a></li>
+            <li><a class="dropdown-item" href="/techroom/accessories">Accessories</a></li>
           </ul>
+        </li>
         </ul>
-      </div>
+        <ul class='navbar-nav ms-auto'>
+          <% if(currUser) { %>
+            <li class="nav-item me-2">
+                <a class="nav-link" href="/techroom/cart">Cart</a>
+              </li>
+              <li class="nav-item me-2">
+                <a class="nav-link" href="/techroom/logout">Logout</a>
+              </li>
+            <% } else {%>
+              <li class="nav-item me-2">
+                <a class="nav-link" href="/techroom/cart">Cart</a>
+              </li>
+            <li class="nav-item me-2">
+                <a class="nav-link" href="/techroom/signup">Signup</a>
+            </li>
+            <li class="nav-item me-2">
+                <a class="nav-link" href="/techroom/login">Login</a>
+            </li>
+            <% } %>
+        </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 
-  

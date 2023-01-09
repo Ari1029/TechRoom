@@ -13,7 +13,7 @@ router.get('/:category', checkCategory, promiseWrapper(async (req, res) => {
 }))
 
 //get create form, we check if user is an admin using req.user._id and deny request if not. Have a link on the page to add a product if admin.
-router.get('/:category/new', checkCategory, ensureLogin, checkAdmin, (req, res) => {
+router.get('/:category/new', checkCategory, ensureLogin, (req, res) => {
     const { category } = req.params;
     res.render('layouts/tech/create', { page: category }) //when we render this form, we check if browserUser.permission is true or false and render/dont render the form depending on that
 })
@@ -42,7 +42,7 @@ router.get('/:category/:id', checkCategory, promiseWrapper(async (req, res) => {
 }))
 
 //Post product data
-router.post('/:category', checkCategory, ensureLogin, checkAdmin, async (req, res) => {
+router.post('/:category', checkCategory, ensureLogin, async (req, res) => {
     const { category } = req.params;
     console.log(req.body)
     const product = new Product(req.body);

@@ -19,7 +19,7 @@
         <div class="col-5 whiteText display-flex">
             <form action="/techroom/cart/order/stripe" method="POST" novalidate class="validated-form">
                 <% let i=0; for(let product of order.products){i+=product.price} %>
-                <h6>Your total is: $<%=i%></h6>
+                <h6>Your total before tax is: $<%=i%></h6>
                 <h6>Enter your address for delivery!</h6>
                 <label for="streetAddress" class="form-label">Street Address</label>
                 <input class='mb-3'type="text" name="streetAddress" id="streetAddress">
