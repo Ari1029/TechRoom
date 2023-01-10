@@ -14,10 +14,14 @@ const promiseWrapper = require('./utilities/promiseWrapper');
 const {ensureLogin} = require('./middleware');
 const Order =require('./models/Order');
 const flash = require('connect-flash');
+const { postcodeValidator} = require('postcode-validator');
+
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config()
+    }    
 
 app.use(express.static(__dirname + '/public'));
 
-require('dotenv').config()
 // app.request(express.json())
 const stripe = require('stripe')(process.env.STRIPE_KEY)
 app.use(express.json())
@@ -69,11 +73,51 @@ app.use((req,res,next)=>{
     next();
 })
 
-//routes
+//Stripe payment gateway route + order creation and user product removal.
 app.post('/techroom/create-session',ensureLogin, promiseWrapper(async(req,res)=>{
     const id = req.user._id;
+    const {country, postalCode, city, streetAddress} = req.body;
+    if(streetAddress===''){
+        req.flash('error','Please enter you street address');
+        return res.redirect('/techroom/cart/order');
+    }
+    else if(!city){
+        req.flash('error','Please enter your city');
+        return res.redirect('/techroom/cart/order');
+    }
+    else if(!postalCode){
+        req.flash('pay','Please enter your postal code');
+        return res.redirect('/techroom/cart/order');
+    }
+    else if(!country){
+        req.flash('pay','Please enter your country');
+        return res.redirect('/techroom/cart/order');
+    }
+    else if(postcodeValidator(postalCode, 'CA')===false){
+        req.flash('pay','Please enter a valid postal code to ship you to');
+        return res.redirect('/techroom/cart/order');
+    }
+    else{
+    const user = await User.findById(id).populate('products');
+    const order = new Order;
+    order.user = user;
+    order.streetAddress = streetAddress;
+    order.country = country;
+    order.city=city;
+    order.postalCode = postalCode;
+    order.status = 'Pending';
     const date = Date.now();
-    const order = await Order.findOneAndUpdate({user: {_id: id}},{date:date}).populate('user').populate('products');
+    order.date = parseInt(date);
+    let i=0;
+    for(let product of user.products){
+        product.helper = 0;
+        i+=product.price;
+        order.products.push(product);
+        console.log(i);
+    }
+    order.totalPrice = i*1.13;
+    await order.save();
+
     const tot = order.totalPrice * 100;
     let name = `${order.user.username}'s TechRoom Order`;
     name = name.toUpperCase();
@@ -92,11 +136,12 @@ app.post('/techroom/create-session',ensureLogin, promiseWrapper(async(req,res)=>
             }
         ],
         mode:'payment',
-        success_url: `${process.env.URL}/techroom`,
-        cancel_url: `${process.env.URL}/techroom`
+        success_url: `${process.env.URL}/techroom/orderSuccess`,
+        cancel_url: `${process.env.URL}/techroom/orderFailed`
     })
     res.redirect(`${session.url}`);
     }
+}
 ))
 app.use('/techroom',cart)
 app.use('/techroom',userPaths);

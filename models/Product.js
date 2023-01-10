@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 const Review = require('./Review')
 
-const imgSchema = new mongoose.Schema({
-    url: String,
-    filename: String
-})
-
 const ProductSchema = new mongoose.Schema({
     name:{
         type: String,
@@ -32,7 +27,8 @@ const ProductSchema = new mongoose.Schema({
         required: [true,'must include a category for product']
     },
     image: {
-        type: imgSchema,
+        url: String,
+        filename: String
         // required: [true,'must upload an image of this product']
     },
     reviews:{
@@ -43,7 +39,12 @@ const ProductSchema = new mongoose.Schema({
     },
     averageRating:{
         type: Number
+    },
+    helper:{
+        type: Number,
+        default: 0
     }
+    //we use helper as a way to pull all the elements from the array once a user has made an order
 })
 
 ProductSchema.post('fineOneAndDelete', async (req)=>{

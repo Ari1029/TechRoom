@@ -65,7 +65,7 @@ router.get('/login',promiseWrapper(async (req,res)=>{
 }))
 
 //using postman login middleware authenticate
-router.post('/login',passport.authenticate('local',{failureFlash: true, failureRedirect: '/login'}),async(req,res)=>{
+router.post('/login',passport.authenticate('local',{failureFlash: true, failureRedirect: '/techroom/login'}),async(req,res)=>{
     const username = req.body.username;
     const user = await User.findOne({username: username});
     req.flash('success',`Welcome back, ${username}`);

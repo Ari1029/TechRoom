@@ -1,27 +1,32 @@
 <% layout('layouts/mainTemplate') %>
 <link href="/css/table.css" rel="stylesheet">
+<link href="/css/button.css" rel="stylesheet">
 
 <div class="row">
-    <div class="col-7">
-            <h5 class="card-title">Hello <%=order.user.username%>, are you ready to checkout? Here are the products currently in your cart:</h5>
+    <div class="col-6">
+            <h5 class="card-title">Cart:</h5>
         <div class="card-body">
-            <% for (let product of order.products){ %>
-                <div class="col-3 card mb-4">
+            <% if(user.products.length === 0) { %>
+                <h6>Hi <%=user.username%>, your cart is currently empty. Browse through our assortment of technologies using the navbar above. <% } %>
+            <% for (let product of user.products){ %>
+                <div class="col-4 card mb-4">
                 <h6><%=product.name%></h6>
                 <h6><%=product.price%></h6>
-                <h6><%=product.imgage%></h6>
+                <img src="<%=product.image.url%>">
             </div>
             <% } %>
         </div>
         <div class="card-footer">
-            Cart: <%=order.products.length%> items
+            <%=user.products.length%> items
         </div>
         </div>
-        <div class="offset-1 col-4 whiteText display-flex">
-            <% let i=0; for(let product of order.products){i+=product.price} %>
-                <h6>Your total before tax is <span>$<%=i%></span></h6>
-                <h6>Enter your address for delivery!</h6>
-            <form action="/techroom/cart/order/stripe" method="POST" novalidate class="validated-form">
+        <% if(user.products.length >=1) { %>
+        <div class="offset-1 col-5 whiteText display-flex align-items-center">
+            <br><br>
+            <% let i=0; for(let product of user.products){i+=product.price} %>
+                <h6>Your total including tax is <span>$<%=i*1.13%></span></h6>
+                <h6>Enter your desired shipment address and continue to checkout!</h6>
+            <form action="/techroom/create-session" method="POST" novalidate class="validated-form">
                 <br>
                 <p>
                 <label for="streetAddress" class="form-label">Street Address</label>
@@ -43,10 +48,10 @@
                 <input class='mb-3' type="text" name="country" id="country">
             </p>
             <br>
-                <button class="btn btn-info">Continue to checkout</button>
+            <button class="btn-grad">Pay via Stripe</button>
             </form>
         </div>
     </div>
 </div>
+<% } %>
 
-<!-- on side once we get bootstrap layout-->

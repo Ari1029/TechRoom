@@ -18,11 +18,9 @@ module.exports.checkCategory = (req, res, next) => {
 module.exports.ensureLogin = (req, res, next) => {
     if (!req.isAuthenticated()) {
         req.session.return = req.url;
-        const error = {
-            message: 'You must be signed in to access this functionality!',
-            statusCode: 401
-        }        
-        return res.render('404', { error });
+        let real = req.url.slice(1);
+        req.flash('pay',`Please login to continue your access to ${real}`)
+        return res.redirect('/techroom');
     }
     next();
 }
@@ -32,11 +30,8 @@ module.exports.checkAdmin = async (req, res, next) => {
     const user1 = await User.findById(id).populate('products');
     console.log(user1);
     if (user1.permission === false) {
-        const error = {
-            message: 'You do not have permission to do that',
-            statusCode: 401
-        }
-        return res.render('404', { error });
+        req.flash('error', `You do not have permission to do that.`)
+        return res.redirect('/techroom')
     }
     next();
 }

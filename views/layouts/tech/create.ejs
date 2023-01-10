@@ -1,14 +1,36 @@
 <% layout('layouts/mainTemplate') %>
-
-<form action='/techroom/<%=page%>' method="POST" validated-form novalidate>
-    <label class="form-label" for="name">Product Name</label>
-    <input type = 'text' name="name" id="name" required>
-    <label class="form-label" for="price">Price</label>
-    <input type = 'number' name="price" id="price" required>
-    <label class="form-label" for="productQuantity">Product Quantity</label>
-    <input type = 'number' name="productQuantity" id="productQuantity" required>
-    <label class="form-label" for="description">Description</label>
-    <textarea required class="form-control" name="description" id="body" cols="40" rows="5"></textarea>
-    <input class="form-control" name="category" value="<%=page%>" id="category" style="display: none;">
-    <button>Add Product</button>
-</form>
+<link href="/css/button.css" rel="stylesheet">
+<link href="/css/create.css" rel="stylesheet">
+<% let i = page[0].toUpperCase(); let j=page.slice(1); let k=i+j;%>
+<div class="row">
+    <div class="col-6">
+        <br>
+    <h2 class="text-center">Create Product</h2>
+        <form action='/techroom/<%=page%>' method="POST" class='validated-form' novalidate enctype="multipart/form-data">
+            <div class="mb-3">
+            <label class="form-label" for="name">Product Name</label>
+            <input class='form-control' type = 'text' name="name" id="name" required>
+        </div>
+<div class="mb-3">
+    <label for="price" class="form-label">Price</label>
+        <div class="input-group">
+            <span class="input-group-text" id="label">$</span>
+            <input name='price' type="number" class="form-control" placeholder="0" aria-label="label" aria-describedby="label">
+          </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="productQuantity">Quantity: <%=k%> collection</label>
+            <input class='form-control' type = 'number' name="productQuantity" id="productQuantity" required>
+        </div>
+        <input type="file" name="image" id="">
+        <div class="mb-3">
+            <label class="form-label" for="description">Product description</label>
+            <textarea required class="form-control" name="description" id="body" cols="40" rows="5"></textarea>
+        </div>
+            <button class="btn-grad2 mb-4">List Product</button>
+        </form>
+    </div>
+    <div class="col-6 this">
+        <img src="https://images.unsplash.com/photo-1601342631279-43334c219bdc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE3fHx8ZW58MHx8fHw%3D&w=1000&q=80">
+    </div>
+</div>

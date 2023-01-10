@@ -26,20 +26,19 @@
                 <% if(k<products.length) { %>
                     <div class="col-md-4">
                         <div class="card h-100">
-                            <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-deeppurple-witb-202209_FMT_WHH?wid=560&hei=744&fmt=jpeg&qlt=90&.v=1660789320263" class="card-img-top" alt="...">
+                            <img src="<%=products[k].image.url%>" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold"><%=products[k].name%></h5>
-                               
+                                <p>Price: <%=products[k].price%></p>
                                 <p class="card-text"><% if (products[k].productQuantity > 10){ %>
                                     <p class="text-success">In stock</p>
                                     <% } else {%>
-                                        <p class="text-success">Only <%=products[k].productQuantity%> units left</p>
+                                        <p class="text-success"><b>Only <%=products[k].productQuantity%> units left</b></p>
                                         <% } %>
-                                        <p>Price: <%=products[k].price%></p>
+                                    <p><%=products[k].description.slice(0,30)%>...</p>
                                         <form action="/techroom/<%=page%>/<%=products[k]._id%>" method="GET">
                                             <button class="btn-grad1">Details</button>
                                         </form>
-
                                 </p>
                             </div>
                         </div>
@@ -50,8 +49,9 @@
                 </div>
                     <br>
                 <% } %>
+                
     <% if(currUser && user.permission) { %>
-    <form clas='mb-3' action="/techroom/<%=page%>/new" method="GET">
-        <button class="mb-5 btn btn-success">Add an item for sale</button>
+    <form clas='mb-2 mt-0' action="/techroom/<%=page%>/new" method="GET">
+        <button class="mb-5 btn btn-success">Add to <%=page%> collection</button>
     </form>
     <% } %>

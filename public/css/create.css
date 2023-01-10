@@ -1,0 +1,9 @@
+.this{
+    display: flex;
+    justify-content: end;
+    align-items: start;
+}
+img{
+    width: 450px;
+    height: 655px
+}
