@@ -26,7 +26,7 @@ router.get('/signup',(req,res)=>{
 router.get('/logout',(req,res)=>{
     req.logout(function(err) {
         if (err) { return next(err); }
-        // req.flash('success','Successfully logged out')
+        req.flash('pay','Successfully logged out')
         res.redirect('/techroom');
       });
 })
@@ -53,7 +53,10 @@ router.post('/signup',promiseWrapper(async (req,res,next)=>{
     const authUser = await User.register(user,password);
     req.login(authUser,err=>{
         if(err) return next(err);
-        else res.redirect('/techroom')
+        else {
+            req.flash('success',`Welcome to TechRoom, ${username}`);
+            res.redirect('/techroom')
+        }
     })
 }))
 
@@ -65,7 +68,8 @@ router.get('/login',promiseWrapper(async (req,res)=>{
 router.post('/login',passport.authenticate('local',{failureFlash: true, failureRedirect: '/login'}),async(req,res)=>{
     const username = req.body.username;
     const user = await User.findOne({username: username});
-        return res.redirect('/techroom');
+    req.flash('success',`Welcome back, ${username}`);
+    return res.redirect('/techroom');
 })
 
 module.exports = router;

@@ -1,4 +1,5 @@
 <% layout('layouts/mainTemplate') %>
+<link href="/css/table.css" rel="stylesheet">
 
 <div class="row">
     <div class="col-7">
@@ -16,25 +17,32 @@
             Cart: <%=order.products.length%> items
         </div>
         </div>
-        <div class="col-5 whiteText display-flex">
-            <form action="/techroom/cart/order/stripe" method="POST" novalidate class="validated-form">
-                <% let i=0; for(let product of order.products){i+=product.price} %>
-                <h6>Your total before tax is: $<%=i%></h6>
+        <div class="offset-1 col-4 whiteText display-flex">
+            <% let i=0; for(let product of order.products){i+=product.price} %>
+                <h6>Your total before tax is <span>$<%=i%></span></h6>
                 <h6>Enter your address for delivery!</h6>
-                <label for="streetAddress" class="form-label">Street Address</label>
-                <input class='mb-3'type="text" name="streetAddress" id="streetAddress">
+            <form action="/techroom/cart/order/stripe" method="POST" novalidate class="validated-form">
                 <br>
-                
+                <p>
+                <label for="streetAddress" class="form-label">Street Address</label>
+                <input class='ml-0 mb-3'type="text" name="streetAddress" id="streetAddress">
+                </p>
+                <br>
+                <p>
                 <label for="city" class="form-label">City</label>
                 <input class='mb-3'type="text" name="city" id="city">
+            </p>
                 <br>
-
+                <p>
                 <label for="postalCode" class="form-label">Postal Code</label>
                 <input class='mb-3'type="text" name="postalCode" id="postalCode">
+            </p>
                 <br>
-
+                <p>
                 <label for="country" class="form-label">Country</label>
                 <input class='mb-3' type="text" name="country" id="country">
+            </p>
+            <br>
                 <button class="btn btn-info">Continue to checkout</button>
             </form>
         </div>

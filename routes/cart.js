@@ -6,6 +6,7 @@ const Order = require('../models/Order')
 const Address = require('../models/Address')
 const promiseWrapper = require('../utilities/promiseWrapper');
 const { ensureLogin } = require('../middleware');
+const { postcodeValidator} = require('postcode-validator');
 
 // router.delete('/cart/:productId',promiseWrapper(async (req,res)=>{
 //     const {productId} = req.params;
@@ -20,13 +21,13 @@ router.get('/cart', ensureLogin, promiseWrapper(async (req, res) => {
 }))
 
 router.post('/cart', ensureLogin, promiseWrapper(async (req, res) => { //SENT FROM TECH/INDEX PAGE. DISPLAY ALL USER.PRODUCTS ON CART INDEX PAGE
-    const{category}=req.params;
     const id = req.user._id;
     const user = await User.findOne({_id: id});
     const product = await Product.findOne({name: req.body.name});
     user.products.push(product);
     await user.save();
-    res.redirect(`/techroom/cart`);
+    req.flash('success',`The ${product.name} has been added to your cart`);
+    res.redirect(`/techroom/${product.category}`);
 }))
 
 router.get('/cart/order',ensureLogin, promiseWrapper(async(req,res)=>{
@@ -65,9 +66,33 @@ router.get('/cart/order/stripe/create-payment',ensureLogin, promiseWrapper(async
 router.post('/cart/order/stripe',ensureLogin,promiseWrapper(async(req,res)=>{
     const id = req.user._id;
     const {country, postalCode, city, streetAddress} = req.body;
+    console.log(streetAddress);
+    if(streetAddress===''){
+        req.flash('pay','Please enter you street address');
+        res.redirect('/techroom/cart/order');
+    }
+    else if(!city){
+        req.flash('pay','Please enter your city');
+        res.redirect('/techroom/cart/order');
+    }
+    else if(!postalCode){
+        req.flash('pay','Please enter your postal code');
+        res.redirect('/techroom/cart/order');
+    }
+    else if(!country){
+        req.flash('pay','Please enter your country');
+        res.redirect('/techroom/cart/order');
+    }
+    else if(postcodeValidator(postalCode, 'CA')===false){
+        req.flash('pay','Please enter a valid postal code to ship to');
+        res.redirect('/techroom/cart/order');
+    }
+    else{
     const user = await User.findById(id);
     const order = await Order.findOneAndUpdate({user: {_id: id}}, {streetAddress: streetAddress,country: country,city: city, postalCode: postalCode, status: 'Pending'});
+    req.flash('pay',`Continue payment via our currently supported plarforms`);
     res.redirect('/techroom/cart/order/stripe/create-payment');
+    }
 }))
 
 

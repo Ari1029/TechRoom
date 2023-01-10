@@ -13,9 +13,9 @@ const Strategy = require('passport-local');
 const promiseWrapper = require('./utilities/promiseWrapper');
 const {ensureLogin} = require('./middleware');
 const Order =require('./models/Order');
+const flash = require('connect-flash');
 
 app.use(express.static(__dirname + '/public'));
-
 
 require('dotenv').config()
 // app.request(express.json())
@@ -49,12 +49,20 @@ app.use(expressSesssion({
     secret: 'private secret',
     saveUninitialized: true
 }))
+app.use(flash());
 
 app.use(passport.session())
 app.use(passport.initialize())
 passport.use(new Strategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use((req,res,next)=>{
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    res.locals.pay = req.flash('pay');
+    next();
+})
 
 app.use((req,res,next)=>{
     res.locals.currUser = req.user;

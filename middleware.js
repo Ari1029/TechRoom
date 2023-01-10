@@ -14,6 +14,7 @@ module.exports.checkCategory = (req, res, next) => {
     next();
 }
 
+//UPDATE THESE TO SEND FLASHES INSTEAD PROMPTING THE USER TO LOGIN OR STATING THEY DO NOT HAVE ADMIN PRIVELEGES
 module.exports.ensureLogin = (req, res, next) => {
     if (!req.isAuthenticated()) {
         req.session.return = req.url;

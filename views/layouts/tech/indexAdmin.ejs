@@ -1,4 +1,6 @@
 <% layout('layouts/mainTemplate') %>
+<link href="/css/button.css" rel="stylesheet">
+
     <% if (page === 'phones') { %>
     <h1 class="mb-3">PHONES</h1>
     <% } %>
@@ -34,7 +36,9 @@
                                         <p class="text-success">Only <%=products[k].productQuantity%> units left</p>
                                         <% } %>
                                         <p>Price: <%=products[k].price%></p>
-    <a href="/techroom/<%=page%>/<%=products[k]._id%>" class="btn btn-primary">View Product</a>
+                                        <form action="/techroom/<%=page%>/<%=products[k]._id%>" method="GET">
+                                            <button class="btn-grad1">Details</button>
+                                        </form>
 
                                 </p>
                             </div>
