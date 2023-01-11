@@ -1,0 +1,92 @@
+
+.card{border:none}
+.product{background-color: #eee}
+.brand{font-size: 13px}
+.act-price{color:red;font-weight: 700}
+.about{font-size: 14px}
+.color{margin-bottom:10px}
+label.radio{cursor: pointer}
+label.radio input{position: absolute;top: 0;left: 0;visibility: hidden;pointer-events: none}
+label.radio span{padding: 2px 9px;border: 2px solid #ff0000;display: inline-block;color: #ff0000;border-radius: 3px;text-transform: uppercase}
+label.radio input:checked+span{border-color: #ff0000;background-color: #ff0000;color: #fff}
+.btn-danger{background-color: #ff0000 !important;border-color: #ff0000 !important}
+.btn-danger:hover{background-color: #da0606 !important;border-color: #da0606 !important}
+.btn-danger:focus{box-shadow: none}
+.cart i{margin-right: 10px}
+.resize{
+  padding: 4px;
+  padding-left: 9px;
+  padding-right: 9px;
+  font-size: 10px!important;
+  font-weight: 800!important;
+  border-radius: 15px!important;
+  margin-bottom: 5px!important;
+  margin-top: 0px;
+}
+.textbody{
+  margin-bottom: 10px!important;
+}
+
+
+.mb-30 {
+  margin-bottom: 30px !important;
+}
+
+.card-img-tiles {
+  display: block;
+  border-bottom: 1px solid #e1e7ec;
+}
+
+a {
+  color: #0da9ef;
+  text-decoration: none !important;
+}
+
+.card-img-tiles>.inner {
+  display: table;
+  width: 100%;
+}
+
+.card-img-tiles .main-img, .card-img-tiles .thumblist {
+  display: table-cell;
+  width: 65%;
+  padding: 15px;
+  vertical-align: middle;
+}
+
+.card-img-tiles .main-img>img:last-child, .card-img-tiles .thumblist>img:last-child {
+  margin-bottom: 0;
+}
+
+.card-img-tiles .main-img>img, .card-img-tiles .thumblist>img {
+  display: block;
+  width: 100%;
+  margin-bottom: 6px;
+}
+.thumblist {
+  width: 35%;
+  border-left: 1px solid #e1e7ec !important;
+  display: table-cell;
+  width: 65%;
+  padding: 15px;
+  vertical-align: middle;
+}
+
+
+
+.card-img-tiles .thumblist>img {
+  display: block;
+  width: 100%;
+  margin-bottom: 6px;
+}
+.btn-group-sm>.btn, .btn-sm {
+  padding: .45rem .5rem !important;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+}
+
+.real{
+  height: 200px;
+  width: 200px
+}

@@ -37,7 +37,7 @@ const ProductSchema = new mongoose.Schema({
             ref: 'Review'
         }],
     },
-    averageRating:{
+    date:{
         type: Number
     },
     helper:{

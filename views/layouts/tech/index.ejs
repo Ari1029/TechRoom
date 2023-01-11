@@ -1,22 +1,24 @@
 <% layout('layouts/mainTemplate') %>
 <link href="/css/button.css" rel="stylesheet">
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<link href="/css/titles.css" rel="stylesheet">
 
     <% if (page === 'phones') { %>
-    <h1 class="mb-3">PHONES</h1>
+    <h1 class='title'style='text-align: center; color:white'class="mb-3">Phones</h1>
     <% } %>
 
     <% if (page === 'laptops') { %>
-    <h1 class="mb-3">LAPTOPS</h1>
+    <h1 class='title'style='text-align: center; color:white'class="mb-3">Laptops</h1>
     <% } %>
     
     <% if (page === 'tablets') { %>
-    <h1 class="mb-3">TABLETS</h1>
+    <h1 class='title'style='text-align: center; color:white'class="mb-3">Tablets</h1>
      <% } %>
     
     <% if (page === 'accessories') { %>
-    <h1 class="mb-3">ACCESSORIES</h1>
+    <h1 class='title'style='text-align: center; color:white'class="mb-3">Accessories</h1>
     <% } %>
-
+<br>
 <!-- Creating card-inline utility -->
     <% let k=0%>
         <div class="container mt-3">
@@ -25,20 +27,19 @@
             <% for(let l=0; l<3; l++) { %>
                 <% if(k<products.length) { %>
                     <div class="col-md-4">
-                        <div class="card h-100">
+                        <div class="card h-100" style="background-color: rgb(246, 246, 246)">
                             <img src="<%=products[k].image.url%>" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold"><%=products[k].name%></h5>
-                                <p>Price: <%=products[k].price%></p>
+                                <p class="text-muted">$<%=products[k].price%></p>
                                 <p class="card-text"><% if (products[k].productQuantity > 10){ %>
-                                    <p class="text-success">In stock</p>
+                                    <p class="stock">In stock</p> <i class="bi bi-check"></i>
                                     <% } else {%>
-                                        <p class="text-success"><b>Only <%=products[k].productQuantity%> units left</b></p>
+                                        <p class="stock"><b>Only <%=products[k].productQuantity%> units left</b></p>
                                         <% } %>
                                     <p><%=products[k].description.slice(0,30)%>...</p>
                                         <form action="/techroom/<%=page%>/<%=products[k]._id%>" method="GET">
-                                            <button class="btn-grad1">Details</button>
-                                        </form>
+                                            <button class="btn-grad1">Details</button>                                        </form>
                                 </p>
                             </div>
                         </div>
@@ -49,4 +50,3 @@
                 </div>
                     <br>
                 <% } %>
-                

@@ -76,8 +76,13 @@ router.post('/:category', checkCategory, ensureLogin, checkAdmin, upload.single(
     }
     const product = new Product(req.body);
     product.category = category;
+    if(!req.file){
+        req.flash('pay','Please enter an image for the product');
+        return res.redirect(`/techroom/${category}/new`);
+    }
     product.image.url = req.file.path;
     product.image.filename = req.file.filename;
+    product.date = Date.now();
     await product.save();
     res.redirect(`/techroom/${category}`)
 })

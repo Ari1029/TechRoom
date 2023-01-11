@@ -1,21 +1,39 @@
 const router = require('express').Router();
 const User = require('../models/User');
-const Order = require('../models/Order');
+const Product = require('../models/Product');
 const promiseWrapper = require('../utilities/promiseWrapper');
 const passport = require('passport');
 const { ensureLogin } = require('../middleware');
 
+function getMin(array){
+    const priceArray = array.map((i)=>{
+        return i.price;
+    })
+    const min = Math.min(...priceArray);
+    return min;
+}
 
 //ADMIN: VIEW ALL CURRENT ORDERS
-router.get('/', promiseWrapper(async(req,res)=>{ //home page will be different for user and admin
-    //if req.user is an admin, then run the below code
-    // const displayUsers = await User.find({permission: false}).populate({
-    //     path: 'orders',
-    // })
-    // res.render('layouts/admin/index',{displayUsers})
+router.get('/', promiseWrapper(async(req,res)=>{ 
 
-    //otherwie, res.render the home landing page
-    res.render('layouts/home');
+    const laptops = await Product.find({category: 'laptops'});
+    const lmin = getMin(laptops);
+    const laptop = await Product.findOne({price: lmin}).populate('image')
+    
+    const tablets = await Product.find({category: 'tablets'});
+    const tmin = getMin(tablets)
+    const tablet = await Product.findOne({price: tmin}).populate('image')
+
+    const phones = await Product.find({category: 'phones'});
+    const pmin = getMin(phones)
+    const phone = await Product.findOne({price: pmin}).populate('image')
+
+    const accessories = await Product.find({category: 'accessories'});
+    const amin = getMin(accessories)
+    const accessory = await Product.findOne({price: amin}).populate('image')
+
+
+    res.render('layouts/home',{laptop, tablet, phone,accessory, lmin, tmin, pmin, amin});
 }))
 
 router.get('/signup',(req,res)=>{

@@ -9,12 +9,13 @@ const { ensureLogin } = require('../middleware');
 
 router.get('/orderSuccess',promiseWrapper(async(req,res)=>{
     const id = req.user._id;
-    const user = await User.findById(id).populate('products');
+    const user = await User.findById(id);
     for (let product of user.products){
-        user.products.pop(product);
+        const productId = product._id;
+        await User.findByIdAndUpdate(id,{$pull: {products: productId}});
     }
     await user.save();
-    res.render('/order/success');
+    res.render('order/success');
 }))
 
 router.get('/cart/order', ensureLogin, promiseWrapper(async (req, res) => {

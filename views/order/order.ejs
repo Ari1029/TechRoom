@@ -4,10 +4,10 @@
 
 <div class="row">
     <div class="col-6">
-            <h5 class="card-title">Cart:</h5>
+            <h5 class="card-title textWhite">Cart:</h5>
         <div class="card-body">
             <% if(user.products.length === 0) { %>
-                <h6>Hi <%=user.username%>, your cart is currently empty. Browse through our assortment of technologies using the navbar above. <% } %>
+                <h6 class="textWhite">Hi <%=user.username%>, your cart is currently empty. Browse through our assortment of technologies using the navbar above. <% } %>
             <% for (let product of user.products){ %>
                 <div class="col-4 card mb-4">
                 <h6><%=product.name%></h6>
@@ -24,8 +24,8 @@
         <div class="offset-1 col-5 whiteText display-flex align-items-center">
             <br><br>
             <% let i=0; for(let product of user.products){i+=product.price} %>
-                <h6>Your total including tax is <span>$<%=i*1.13%></span></h6>
-                <h6>Enter your desired shipment address and continue to checkout!</h6>
+                <h6 class="textWhite">Total (tax included): <span>$<%=(i*1.13).toFixed(2)%></span></h6>
+                <h6 class="textWhite">Enter your desired shipment address and continue to checkout!</h6>
             <form action="/techroom/create-session" method="POST" novalidate class="validated-form">
                 <br>
                 <p>

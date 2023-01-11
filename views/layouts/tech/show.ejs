@@ -1,44 +1,45 @@
-<% layout('layouts/mainTemplate') %>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card border-light p-4">
-            <div class="row align-items-center">
-                <aside class="col-md-3">
-                    <a href="#">
-                        <img src="<%=product.image.url%>" alt="product-image">
-                    </a>
-                </aside> <!-- col.// -->
-                <div class="col-md-6">
-                    <div class="info-main">
-                        <h5> <%=product.name%> </h5>
-                        <div class="d-flex my-3">
-                            <span class="small text-success ml-3"><i class="fas fa-shopping-cart mr-1"></i><%=product.productQuantity%> orders</span>
+<% layout('layouts/mainTemplate') %>
+<link href="/css/showcard.css" rel="stylesheet">
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+<div class="container mt-5 mb-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-6 align-items-center">
+                        <div class="images p-3">
+                            <div class="text-center p-4"> <img id="main-image" src="<%=product.image.url%>" width="300" height="300" /> </div>               
                         </div>
-                        <p><%=product.description%></p>
                     </div>
-                </div>
-                <div class="col-12 col-md-3">
-                    <div class="d-flex align-items-center">
-                        <span class="h5 mb-0 mr-2">
-                            $<%=product.price%>
-                        </span>
-                    </div> <!-- info-price-detail // -->
-                    <span class="text-success small"><i class="fas fa-shipping-fast mr-1"></i>Free shipping</span>
-                    <div class="mt-4">
-                        <form action="/techroom/cart" method="POST">
-                            <label style="display:none" for="name" class="form-label"></label>
-    <input style="display:none" name="name" value="<%=product.name%>" id="name">
-    <button class="btn btn-primary btn-sm btn-block">Add to Cart</button>
-                        </form>
-                        <a class="btn btn-primary btn-sm btn-block mt-4" href="/techroom/<%=product.category%>">
-                            Back to <%=product.category%>
-                        </a>
+                    <div class="col-md-6">
+                        <div class="product p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <a style='text-decoration:none' href='/techroom/<%=product.category%>'><span class="ml-1 text-primary">Back</span></a> </div><i class="fas fa-shopping-cart mr-1"></i>
+                            </div>
+                            <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">TechRoom</span>
+                                <h5 class="text-uppercase"><%=product.name%></h5>
+                                <div class="price d-flex flex-row align-items-center"> <span class="act-price"></span>
+                                    <div class="ml-2"> <small class="dis-price"></small> <span>$<%=product.price%></span> </div>
+                                </div>
+                            </div>
+                            <p class="about"><%=product.description%></p>
+                            <div class="sizes mt-5">
+                                <button disabled class="resize btn btn-warning btn-sm text-uppercase"><%=product.category%></button>
+                            </div>
+                            <div class="cart mt-4 align-items-center"> 
+                                <form action="/techroom/cart" method="POST">
+                                    <label style="display:none" for="name" class="form-label"></label>
+            <input style="display:none" name="name" value="<%=product.name%>" id="name">
+            <button class="btn btn-danger text-uppercase mr-2 mb-4 px-4">Add to cart</button> <i class="fa fa-share-alt text-muted"></i> 
+                                </form>
+                                
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<br>
-<h4 style="color: rgb(0, 0, 0); text-align:center">Similar Products</h4>

@@ -78,11 +78,11 @@ app.post('/techroom/create-session',ensureLogin, promiseWrapper(async(req,res)=>
     const id = req.user._id;
     const {country, postalCode, city, streetAddress} = req.body;
     if(streetAddress===''){
-        req.flash('error','Please enter you street address');
+        req.flash('pay','Please enter you street address');
         return res.redirect('/techroom/cart/order');
     }
     else if(!city){
-        req.flash('error','Please enter your city');
+        req.flash('pay','Please enter your city');
         return res.redirect('/techroom/cart/order');
     }
     else if(!postalCode){
@@ -113,12 +113,13 @@ app.post('/techroom/create-session',ensureLogin, promiseWrapper(async(req,res)=>
         product.helper = 0;
         i+=product.price;
         order.products.push(product);
-        console.log(i);
     }
-    order.totalPrice = i*1.13;
+    i = (i*1.13).toFixed(2);
+    order.totalPrice = i;
+    console.log(i);
     await order.save();
 
-    const tot = order.totalPrice * 100;
+    const tot = Math.round(i*100);
     let name = `${order.user.username}'s TechRoom Order`;
     name = name.toUpperCase();
     const session = await stripe.checkout.sessions.create({

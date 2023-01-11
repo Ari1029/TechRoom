@@ -1,6 +1,5 @@
 
 .env
+cloudinary/index.js
 uploads/ce10755aef55e6e22b3ef2eb74af1fb9
 uploads/f6b2d9bbc82c9cf422276e3322004d3b
-public/css/trial.css
-cloudinary/index.js
