@@ -6,3 +6,39 @@ input { display: table-cell; }
 span{
     color: #2f8549
 }
+
+.margin{
+    margin: 20px!important
+}
+ h6{
+    font-weight: 400;
+    font-size: 14px;
+ }
+
+.text-muted{
+    font-size: 12px;
+ }
+
+ .col-3{
+    display:inline-block;
+    text-align: center;
+    width: 130px;
+ }
+
+ .btn-sm{
+    font-size: 10px;
+    padding: 5px
+ }
+
+ .left{
+    margin-top:5px
+ }
+
+.delete{
+    display:none;
+}
+
+.mb-4{
+    margin-top: 20px;
+    transform: scale(1.2);
+}

@@ -9,3 +9,10 @@ h5{
 .stock{
     color:rgb(29, 209, 137)
 }
+
+.center{
+    display:block;
+    margin-left:auto;
+    margin-right: auto;
+    width: 50%;
+}

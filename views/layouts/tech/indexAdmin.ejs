@@ -1,5 +1,6 @@
 <% layout('layouts/mainTemplate') %>
 <link href="/css/button.css" rel="stylesheet">
+<link href="/css/titles.css" rel="stylesheet">
 
 <% if (page === 'phones') { %>
     <h1 style='text-align: center; color:white'class="mb-3">Phones</h1>
@@ -25,8 +26,8 @@
             <% for(let l=0; l<3; l++) { %>
                 <% if(k<products.length) { %>
                     <div class="col-md-4">
-                        <div class="card h-100">
-                            <img src="<%=products[k].image.url%>" class="card-img-top" alt="...">
+                        <div class="card h-100" style="background-color: rgb(246, 246, 246)">
+                            <img style='height:250px; width:250px'src="<%=products[k].image.url%>" class= "center card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold"><%=products[k].name%></h5>
                                 <p>Price: <%=products[k].price%></p>

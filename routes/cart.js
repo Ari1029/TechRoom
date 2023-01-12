@@ -24,6 +24,15 @@ router.get('/cart/order', ensureLogin, promiseWrapper(async (req, res) => {
     res.render('order/order',{user});
 }))
 
+router.delete('/cart/order',ensureLogin, promiseWrapper(async(req,res)=>{
+    const {productId} = req.body;
+    const id = req.user._id;
+    const product = await Product.findOne({_id: productId});
+    await User.findByIdAndUpdate(id,{$pull: {products: productId}});
+    req.flash('success',`Removed ${product.name} from your cart`);
+    res.redirect('/techroom/cart/order');
+}))
+
 router.post('/cart', ensureLogin, promiseWrapper(async (req, res) => { //SENT FROM TECH/INDEX PAGE. DISPLAY ALL USER.PRODUCTS ON CART INDEX PAGE
     const id = req.user._id;
     const user = await User.findOne({_id: id});

@@ -30,7 +30,7 @@ module.exports.checkAdmin = async (req, res, next) => {
     const user1 = await User.findById(id).populate('products');
     console.log(user1);
     if (user1.permission === false) {
-        req.flash('error', `You do not have permission to do that.`)
+        req.flash('error', `User accounts do not have access to this page!`)
         return res.redirect('/techroom')
     }
     next();

@@ -6,22 +6,33 @@
     <div class="col-6">
             <h5 class="card-title textWhite">Cart:</h5>
         <div class="card-body">
+            
             <% if(user.products.length === 0) { %>
                 <h6 class="textWhite">Hi <%=user.username%>, your cart is currently empty. Browse through our assortment of technologies using the navbar above. <% } %>
             <% for (let product of user.products){ %>
-                <div class="col-4 card mb-4">
-                <h6><%=product.name%></h6>
-                <h6><%=product.price%></h6>
-                <img src="<%=product.image.url%>">
+                <form action = '/techroom/cart/order?add=DELETE' method="POST">
+                <div class="col-3 card mb-4">
+                <h6 class="left"><%=product.name%></h6>
+                <h6 class="left text-muted">$<%=product.price%></h6>
+                <img style='height: 75px; width: 75px' src="<%=product.image.url%>">
+                    <label class='delete'for="productId">ProductId</label>
+                    <input class='delete' type="text" name="productId" value="<%=product._id%>">
+                    <button class="btn-sm btn-danger btn">Remove</button>
+                    
+            </form>
             </div>
             <% } %>
         </div>
-        <div class="card-footer">
-            <%=user.products.length%> items
+        <div class="textWhite card-footer">
+            <% if(user.products.length>1){ 1 %> 
+                <%=user.products.length%> items 
+                <% } if(user.products.length === 1) {%>
+                1 item 
+                <% } %>
         </div>
         </div>
         <% if(user.products.length >=1) { %>
-        <div class="offset-1 col-5 whiteText display-flex align-items-center">
+        <div class="textWhite offset-1 col-5 whiteText display-flex align-items-center">
             <br><br>
             <% let i=0; for(let product of user.products){i+=product.price} %>
                 <h6 class="textWhite">Total (tax included): <span>$<%=(i*1.13).toFixed(2)%></span></h6>

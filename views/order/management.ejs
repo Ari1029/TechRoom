@@ -1,0 +1,53 @@
+<% layout('layouts/mainTemplate') %>
+<link href="/css/management.css" rel="stylesheet">
+<br><br>
+<h2 class='title'style='text-align: center; color:white'class="mb-3">Current and Compelted TechRoom Orders</h1>
+<br><br><br>
+    <table class="table table-hover table-light">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Change Status</th>
+            <th scope="col">Order Id</th>
+            <th scope="col"># of Products</th>
+            <th scope="col">Price (CAD)</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% for (let order of orders){ %>
+          <tr>
+            <th scope="row"><%=order.user.username%></th>
+            <td>
+                <% if(order.status === 'Pending'){ %>
+                <form action="/techroom/management" method="POST">
+                    <label for="status"></label>
+                    <input type="text" name="status" value="Shipped">
+                    <label for="id"></label>
+                    <input type="text" name="id" value="<%=order._id%>">
+                <button class="btn btn-sm btn-warning">Pending</button>
+            </form>
+                <% } else if(order.status === 'Shipped') {%>
+                    <form action="/techroom/management" method="POST">
+                        <label for="status"></label>
+                        <input type="text" name="status" value="Delivered">
+                        <label for="id"></label>
+                        <input type="text" name="id" value="<%=order._id%>">
+                    <button class="btn btn-sm btn-info">Delivered</button>
+                </form>
+                <% } else if(order.status === 'Delivered') { %>
+                    <form action="/techroom/management" method="POST">
+                        <label for="status"></label>
+                        <input type="text" name="status" value="Delivered">
+                        <label for="id"></label>
+                        <input type="text" name="id" value="<%=order._id%>">
+                    <button class="btn btn-sm btn-success">Shipped</button>
+                </form>
+                <% } %>
+            </td>
+            <td><%=order._id%></td>
+            <td><%=order.products.length%></td>
+            <td><%=order.totalPrice%></td>
+          </tr>
+        <% } %>
+        </tbody>
+      </table>

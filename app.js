@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const allProducts = require('./routes/allProducts');
 const cart = require('./routes/cart');
+const admin = require('./routes/admin')
 const userPaths = require('./routes/users');
 const mongoose = require('mongoose');
 const User =require('./models/User');
@@ -72,6 +73,8 @@ app.use((req,res,next)=>{
     res.locals.currUser = req.user;
     next();
 })
+
+app.use(override('add'));
 
 //Stripe payment gateway route + order creation and user product removal.
 app.post('/techroom/create-session',ensureLogin, promiseWrapper(async(req,res)=>{
@@ -144,6 +147,8 @@ app.post('/techroom/create-session',ensureLogin, promiseWrapper(async(req,res)=>
     }
 }
 ))
+
+app.use('/techroom',admin);
 app.use('/techroom',cart)
 app.use('/techroom',userPaths);
 app.use('/techroom',allProducts);
