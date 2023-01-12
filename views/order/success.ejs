@@ -1,0 +1,16 @@
+<% layout('layouts/mainTemplate') %>
+<link href="/css/success.css" rel="stylesheet">
+<div class="d-flex justify-content-center container mt-5">
+    <div class="card p-3 bg-white"><i class="fa fa-apple"></i>
+        <div class="about-product text-center mt-2"><img src="https://images.unsplash.com/photo-1635405074683-96d6921a2a68?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGVjb21tZXJjZXxlbnwwfHwwfHw%3D&w=1000&q=80" width="300"><br><br>
+            <div>
+                <h5>Congratulations <%=order.user.username%>, your order has been successfully processed!</h5><br>
+            </div>
+        </div>
+        <div class="stats mt-2">
+            
+            <div class="d-flex justify-content-between p-price"><span>Feel free to continue shopping</span><span><a href="/techroom">Home</a></span></div>
+
+        </div>
+    </div>
+</div>

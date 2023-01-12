@@ -37,7 +37,7 @@
                 <% } else if(order.status === 'Delivered') { %>
                     <form action="/techroom/management" method="POST">
                         <label for="status"></label>
-                        <input type="text" name="status" value="Delivered">
+                        <input type="text" name="status" value="Deleted">
                         <label for="id"></label>
                         <input type="text" name="id" value="<%=order._id%>">
                     <button class="btn btn-sm btn-success">Shipped</button>

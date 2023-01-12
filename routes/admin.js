@@ -15,8 +15,13 @@ router.get('/management',ensureLogin, checkAdmin, promiseWrapper(async(req,res)=
 router.post('/management',ensureLogin, checkAdmin, promiseWrapper(async(req,res)=>{
     const {status, id} = req.body;
     const order = await Order.findById(id).populate('user').populate('products');
+    if(status!='Deleted'){
     order.status = status;
     order.save();
+    }
+    else{
+        await Order.findByIdAndDelete(id);
+    }
     res.redirect('/techroom/management');
 }))
 

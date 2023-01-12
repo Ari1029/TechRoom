@@ -7,39 +7,44 @@ const Address = require('../models/Address')
 const promiseWrapper = require('../utilities/promiseWrapper');
 const { ensureLogin } = require('../middleware');
 
-router.get('/orderSuccess',promiseWrapper(async(req,res)=>{
+router.get('/orderSuccess', ensureLogin, promiseWrapper(async (req, res) => {
     const id = req.user._id;
-    const user = await User.findById(id);
-    for (let product of user.products){
+    const user = await User.findById(id).populate('products');
+    if (user.products.length === 0) {
+        req.flash('error', 'You do not have any items in your cart to purchase!')
+        return res.redirect('/techroom/cart/order')
+    }
+    for (let product of user.products) {
         const productId = product._id;
-        await User.findByIdAndUpdate(id,{$pull: {products: productId}});
+        await User.findByIdAndUpdate(id, { $pull: { products: productId } });
     }
     await user.save();
-    res.render('order/success');
+    const order = await Order.findOne({ user: { _id: id } }).populate('user').populate('products');
+    res.render('order/success', { order });
 }))
 
 router.get('/cart/order', ensureLogin, promiseWrapper(async (req, res) => {
     const id = req.user._id;
     const user = await User.findById(id).populate('products');
-    res.render('order/order',{user});
+    res.render('order/order', { user });
 }))
 
-router.delete('/cart/order',ensureLogin, promiseWrapper(async(req,res)=>{
-    const {productId} = req.body;
+router.delete('/cart/order', ensureLogin, promiseWrapper(async (req, res) => {
+    const { productId } = req.body;
     const id = req.user._id;
-    const product = await Product.findOne({_id: productId});
-    await User.findByIdAndUpdate(id,{$pull: {products: productId}});
-    req.flash('success',`Removed ${product.name} from your cart`);
+    const product = await Product.findOne({ _id: productId });
+    await User.findByIdAndUpdate(id, { $pull: { products: productId } });
+    req.flash('success', `Removed ${product.name} from your cart`);
     res.redirect('/techroom/cart/order');
 }))
 
 router.post('/cart', ensureLogin, promiseWrapper(async (req, res) => { //SENT FROM TECH/INDEX PAGE. DISPLAY ALL USER.PRODUCTS ON CART INDEX PAGE
     const id = req.user._id;
-    const user = await User.findOne({_id: id});
-    const product = await Product.findOne({name: req.body.name});
+    const user = await User.findOne({ _id: id });
+    const product = await Product.findOne({ name: req.body.name });
     user.products.push(product);
     await user.save();
-    req.flash('success',`The ${product.name} has been added to your cart`);
+    req.flash('success', `The ${product.name} has been added to your cart`);
     res.redirect(`/techroom/${product.category}`);
 }))
 

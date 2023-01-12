@@ -1,11 +1,30 @@
 <% layout('layouts/mainTemplate') %>
 
-<form action='/techroom/signup' method="POST">
-    <label class="form-label" for="username">Username</label>
-    <input type = 'text' name="username" id="username" required>
-    <label class="form-label" for="email">Email</label>
-    <input type = 'email' name="email" id="email" required>
-    <label class="form-label" for="password">Password</label>
-    <input type = 'password' name="password" id="password" required>
-    <button>Sign up</button>
-</form>
+    <div class="container d-flex justify-content-center align-items-center mt-3">
+        <div class="row">
+            <div class="card shadow col-12 mb-5">
+                <img style='height: 225px; width:337px'
+                    src="https://images.unsplash.com/photo-1529539795054-3c162aab037a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bG9naW58ZW58MHx8MHx8&w=1000&q=80">
+                <div class="card-body">
+                    <h6 class="class">Sign up</h6>
+                    <form action='/techroom/signup' method="POST" class="validated-form">
+                        <div class="mt-3 mb-3">
+                            <label class="form-label" for="username">Username</label>
+                            <input autofocus type='text' class='form-control' name="username" id="username" required>
+                        </div>
+                        <div>
+                            <label class="form-label" for="email">Email</label>
+                            <input class='form-control' type='email' name="email" id="email" required>
+                        </div>
+                        <div>
+                            <label class="form-label" for="password">Password</label>
+                            <input type='password' class="form-control" name="password" id="password" required>
+                        </div>
+
+                        <button class="mt-4 btn-sm btn mb-2 btn-success">Signup</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
