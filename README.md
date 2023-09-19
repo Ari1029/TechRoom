@@ -1,4 +1,4 @@
-#TechRoom
+# TechRoom
 
 TechRoom is a platform that brings together technology products in one accessible space. Consumers can browse, purchase and create reviews on laptops, tablets, mobile devices and accessories.
 
