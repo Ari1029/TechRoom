@@ -1,4 +1,6 @@
-# TechRoom
-TechRoom is a technology-based ecommerce website which allows users to browse and leave reviews on laptops, tablets, phones and accessories. Consumers can check out items in their cart through the implementation of Stripe's API payment gateway.  
-The home page allows users to view the latest products added to inventory. Admins have specialized priveleges to add, remove, edit and update product data. They also have access to an order tracking and management page.
-Middleware using Passport and sessions was developed to authenticate both consumers and admins! A NoSQL database (MongoDB) was used to store product information and insights, as my goal was .
+#TechRoom
+
+TechRoom is a platform that brings together technology products in one accessible space. Consumers can browse, purchase and create reviews on laptops, tablets, mobile devices and accessories.
+
+TechRoom's homepage reflects the very latest products added to inventory for consumers to explore. I've also integrated Stripe's API payment gateway, which ensures that every transaction is swift and secure. Adminstrators have access to a wide variety of tools such as product management, updates and real-time order tracking, making the interface both intuitive and comprehensive. Through Passport and session-based middleware, I was able to authenticate consumer and admin accounts upon login. I used a NoSQL database (MongoDB) in order to store product insights, user information, reviews and orders made.
+
